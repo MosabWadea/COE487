@@ -7,4 +7,4 @@ Project Idea
 This project is bla bla bla
 
 example code
-'this this and that'
+`this this and that`
