@@ -47,7 +47,7 @@ namespace COE487{
         void processFrameAndUpdateGUI(object sender, EventArgs arg) {
             org = cam.QueryFrame();
             if (org == null) return;
-
+            //#TODO make red detection
             proc = org.InRange(new Bgr(175, 0, 0), new Bgr(256, 100, 100));
 
             proc = proc.SmoothGaussian(9);
