@@ -55,6 +55,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.redH = new System.Windows.Forms.TrackBar();
             this.label3 = new System.Windows.Forms.Label();
+            this.consol = new System.Windows.Forms.TextBox();
+            this.control = new System.Windows.Forms.ToolStripMenuItem();
+            this.thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.redL)).BeginInit();
@@ -203,7 +206,8 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveOutputToolStripMenuItem});
+            this.saveOutputToolStripMenuItem,
+            this.control});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.aboutToolStripMenuItem.Text = "File";
@@ -211,15 +215,17 @@
             // saveOutputToolStripMenuItem
             // 
             this.saveOutputToolStripMenuItem.Name = "saveOutputToolStripMenuItem";
-            this.saveOutputToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.saveOutputToolStripMenuItem.Text = "Save Output";
+            this.saveOutputToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.saveOutputToolStripMenuItem.Text = "Copy Output to clip board";
+            this.saveOutputToolStripMenuItem.Click += new System.EventHandler(this.saveOutputToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem1
             // 
+            this.aboutToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem});
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
             this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem1.Text = "About";
-            this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
             // 
             // groupBox2
             // 
@@ -326,11 +332,35 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Red Value";
             // 
+            // consol
+            // 
+            this.consol.Location = new System.Drawing.Point(110, 713);
+            this.consol.Multiline = true;
+            this.consol.Name = "consol";
+            this.consol.ReadOnly = true;
+            this.consol.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.consol.Size = new System.Drawing.Size(1102, 203);
+            this.consol.TabIndex = 14;
+            // 
+            // control
+            // 
+            this.control.Name = "control";
+            this.control.Size = new System.Drawing.Size(213, 22);
+            this.control.Text = "Stop capturing";
+            this.control.Click += new System.EventHandler(this.control_Click);
+            // 
+            // thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem
+            // 
+            this.thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem.Name = "thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem";
+            this.thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem.Size = new System.Drawing.Size(343, 22);
+            this.thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem.Text = "This project was done by Mosab Wadea in COE 487";
+            // 
             // HelloOpenCV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1326, 715);
+            this.ClientSize = new System.Drawing.Size(1326, 974);
+            this.Controls.Add(this.consol);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imageBox2);
@@ -387,6 +417,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar redH;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox consol;
+        private System.Windows.Forms.ToolStripMenuItem control;
+        private System.Windows.Forms.ToolStripMenuItem thisProjectWasDoneByMosabWadeaInCOE487ToolStripMenuItem;
     }
 }
 

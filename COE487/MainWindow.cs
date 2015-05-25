@@ -66,13 +66,11 @@ namespace COE487{
 
 
         void processFrameAndUpdateGUI(object sender, EventArgs arg) {
+            string con = "";
             org = cam.QueryFrame();
             if (org == null) return;
 
             Image<Bgr, Byte> skeleton = new Image<Bgr,Byte>(new Size(331, 244));
-
-            //org._EqualizeHist();
-            //org._GammaCorrect(0.3);
 
             proc = org.InRange(bgrL, bgrH);
 
@@ -84,45 +82,14 @@ namespace COE487{
                 CvInvoke.cvCircle(org, new Point((int)circles[i].Center.X, (int)circles[i].Center.Y), 3, new MCvScalar(0, 255, 0), -1, LINE_TYPE.CV_AA, 0);
 
                 org.Draw(circles[i], new Bgr(Color.Red), 3);
+                con += "(" + (i+1) + ", " + circles[i].Center.X + ", " + circles[i].Center.Y+"), ";
             }
-
-            //proc._Erode(6);
-            //proc._Dilate(5);
-            //proc._Erode(7);
-
+            if(circles.Length>0)
+                consol.AppendText(con+"\n");
             imageBox1.Image = org;
             imageBox2.Image = proc;
 
         }
-
-        //////This is the erosion method but it is still not working
-        //void erode(object sender, EventArgs arg) {
-        //    org = cam.QueryFrame();
-        //    if (org == null) return;
-
-        //    proc = org.Convert<Gray, Byte>();
-
-        //    Image<Gray, Byte> eroded = new Image<Gray, byte>(proc.Size);
-        //    Image<Gray, Byte> temp = new Image<Gray, byte>(proc.Size);
-        //    Image<Gray, Byte> skel = new Image<Gray, byte>(proc.Size);
-        //    skel.SetValue(0);
-        //    CvInvoke.cvThreshold(proc, proc, 127, 256, 0);
-        //    StructuringElementEx element = new StructuringElementEx(3, 3, 1, 1, Emgu.CV.CvEnum.CV_ELEMENT_SHAPE.CV_SHAPE_CROSS);
-        //    bool done = false;
-
-        //    while (!done) {
-        //        CvInvoke.cvErode(proc, eroded, element, 1);
-        //        CvInvoke.cvDilate(eroded, temp, element, 1);
-        //        temp = proc.Sub(temp);
-        //        skel = skel | temp;
-        //        proc = eroded;
-        //        if (CvInvoke.cvCountNonZero(org) == 0) done = true;
-        //    }
-
-        //    imageBox1.Image = org;
-        //    imageBox2.Image = proc;
-
-        //}
 
         //set scroll values for low
         private void redL_Scroll(object sender, EventArgs e) {
@@ -184,6 +151,23 @@ namespace COE487{
         public void HelloOpenCV_FormClosed(object sender, FormClosedEventArgs e) {
             if (cam != null) {
                 cam.Dispose();
+            }
+        }
+
+        private void saveOutputToolStripMenuItem_Click(object sender, EventArgs e) {
+            Clipboard.SetText(consol.Text);
+        }
+
+        private void control_Click(object sender, EventArgs e) {
+            if (caping == true) {
+                Application.Idle -= processFrameAndUpdateGUI;
+                caping = false;
+                control.Text = "Resume Capturing";
+            }
+            else {
+                Application.Idle += processFrameAndUpdateGUI;
+                caping = true;
+                control.Text = "Stop Capturing";
             }
         }
     }
