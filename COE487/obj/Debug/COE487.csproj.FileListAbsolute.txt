@@ -44,3 +44,7 @@ C:\Users\Mosab\documents\visual studio 2013\Projects\COE487\COE487\bin\Debug\ope
 C:\Users\Mosab\documents\visual studio 2013\Projects\COE487\COE487\bin\Debug\opencv_videostab2410.dll
 C:\Users\Mosab\documents\visual studio 2013\Projects\COE487\COE487\obj\Debug\COE487.csprojResolveAssemblyReference.cache
 C:\Users\Mosab\documents\visual studio 2013\Projects\COE487\COE487\obj\Debug\COE487.HelloOpenCV.resources
+C:\Users\Mosab\Documents\Visual Studio 2013\Projects\COE487\COE487\bin\Debug\COE487.exe.manifest
+C:\Users\Mosab\Documents\Visual Studio 2013\Projects\COE487\COE487\bin\Debug\COE487.application
+C:\Users\Mosab\Documents\Visual Studio 2013\Projects\COE487\COE487\obj\Debug\COE487.exe.manifest
+C:\Users\Mosab\Documents\Visual Studio 2013\Projects\COE487\COE487\obj\Debug\COE487.application
