@@ -1,0 +1,161 @@
+
+%%----------------------------------------------------------------------
+ 
+\documentclass[a4paper,twoside]{IEEEtran}
+
+
+\usepackage[%
+        %       psphotos,%      % uncomment those options you want
+        %       photofit,%
+        %       draft,%
+        %       PStimes,%
+        ]{ieeepes}
+
+\usepackage{filecontents}
+\begin{filecontents*}{bib.bib}
+
+@electronic{1,
+ title     = "Emgu CV: OpenCV libray for .NET platform, \\
+ \emph{http://www.emgu.com/wiki/index.php/Main_Page}",
+ url       = "http://www.emgu.com/wiki/index.php/Main_Page"
+}
+
+\end{filecontents*}
+
+
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{courier}
+\definecolor{bluekeywords}{rgb}{0,0,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
+\definecolor{types}{rgb}{0.17,0.57,0.68}
+
+\usepackage{listings}
+\lstset{language=[Sharp]C,
+captionpos=b,
+frame=l,
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle=\color{greencomments},
+morekeywords={partial, var, value, get, set},
+keywordstyle=\color{bluekeywords},
+stringstyle=\color{redstrings},
+basicstyle=\ttfamily\small,
+}
+\usepackage{varioref}
+
+\title{Circle Detection Using Computer Vision for Skeleton Detection and Simulation of Mechanical applications}
+
+\author{
+        Mosab Wadea Hussain\\
+        s201021320@kfupm.edu.sa\\
+        Dept of Computer Engineering, KFUPM\\
+        Dhahran, Saudi Arabia
+}
+
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This work is meant to be a course project for Computer Vision course (COE 487). The course gave the students a clear understanding and guided them into processing images and applying algorithms on images to  take a decision based on some logic that can be performed on the images. This paper will go through the process of how the project identifies some circles and detects the movements of these circles and represent them in some form in order to send these values to some other software for simulation.
+\end{abstract}
+
+
+
+\section{Introduction}
+Computer vision field is one of the most important fields in the uprising and rapidly expanding field of inventions and new technologies. The importance of computer vision emerges when there is a need of a computer to analyze a visual thing and especially if that was needed in real time. On the other hand, the mechanical field now is trying to increase the efficiency of the newly designed machines and moving objects. In order to satisfy this, simulations must be performed on the designs and devices. Here comes one of the most important fields of computer vision. Where it can be possible to capture the movements of a device and identify it and represent it.
+
+
+%-------------------------------------------------------
+\section{Goal}
+The main aim of this project will be developing a program that can get live camera capturing for a moving mechanical object that is tagged with colored circles, these circles are detected by an algorithm and represented in a format that can be used to simulate the object's movement in other simulating softwares. This will help the mechanical engineers to spot issues in a design that is still not fully functioning by simulating the movement and apply extreme tests and scenarios during the simulation without the need to damage the device. It can also help to evaluate the movement of a device that can not be reached by workers or can not be stopped. 
+
+%-------------------------------------------------------
+\section{Methodology}
+The project uses an algorithm that was developed in C\#, using the EmguCV \cite{1} library in C\#. This algorithm detects the circles in an image that is taking by a camera. Before the camera input is processed by the algorithm it must be filtered, the filtration is mainly to remove the unwanted colors in the image. Then a threshold filter is applied to convert the image into a binary image that the algorithm can deal with. The algorithm used in detecting circles is the \emph{Hough} filter for detecting contours. Here is the code developed in C\# using Visual Studio:
+\subsection{Filtering Code:}
+The code shown below is for capturing and filtering. It starts by querying the image frame from the camera object. if there is an image it will apply the function \emph{InRange} that will isolate the unwanted colors, the resulting image is assigned to a binary type variable, this will convert the image to a binary image. then it will smooth the resulting image to remove any remaining noise. The result of this process for blue color filtering can be seen in \figref{filter}.
+\begin{figure}
+\centering
+\fbox{\includegraphics[scale=0.8]{img/filter.png}}
+\caption{Left: original image. Right: filtered image}
+\label{filter}
+\end{figure}
+\lstset{style=sharpc}
+\begin{lstlisting}
+org = cam.QueryFrame();
+if (org == null) return;
+
+proc = org.InRange(bgrL, bgrH);
+//bgrL= lowest BGR value, bgrH= highest BGR
+// value
+proc = proc.SmoothGaussian(9);
+\end{lstlisting}
+
+
+
+\subsection{finding and plotting circles:}
+The method used for this purpose is called \emph{HoughCircles} this method will return an array of \emph{Circle} objects that can be used in the program. The following code takes each circle in the array and plots it on the original image it self.
+\lstset{style=sharpc}
+\begin{lstlisting}
+CircleF[] circles = proc.HoughCircles(new Gray(100), new Gray(50), 2, proc.Height/4, 10, 400)[0];
+
+for (int i =0; i<circles.Length; i++) {
+  CvInvoke.cvCircle(org, new Point((int)circles[i].Center.X, (int)circles[i].Center.Y), 3, new MCvScalar(0, 255, 0), -1, LINE_TYPE.CV_AA, 0);
+  org.Draw(circles[i], new Bgr(Color.Red), 3);
+  con += "(" + (i+1) + ", " + circles[i].Center.X + ", " + circles[i].Center.Y+"), ";
+ }
+if(circles.Length>0)
+  consol.AppendText(con+"\n");
+imageBox1.Image = org;
+imageBox2.Image = proc;
+\end{lstlisting}
+The result seen in \figref{circles} is the final output of the algorithm. The application gives the user the ability to choose and try different color values for the filtering as show in \figref{circles}.
+
+\begin{figure}
+\centering
+\fbox{\includegraphics[scale=0.8]{img/circles.png}}
+\caption{The red circles are drawn by the program}
+\label{circles}
+\end{figure}
+%-------------------------------------------------------
+\section{Results}
+The output of this software is written directly in a console component. The values printed are the circles and their locations in the image. They are printed in the format ([\emph{circle\_num}], [\emph{x\_coordinate}],[\emph{y\_coordinate}]) as can be seen \figref{out}. It can be seen in the output that the camera was moving, since the coordinates of the circles keeps changing.
+\begin{figure}[h]
+\centering
+\fbox{\includegraphics[scale=2]{img/out.png}}
+\caption{This is the output for the same image in \figref{circles}}
+\label{out}
+\end{figure}
+
+In order to take the values to other program the user can copy the values to clipboard from the file menu and then past the result in another software. \\An over view of the application is shown in \figref{app}.
+
+\begin{figure}[h]
+\centering
+\fbox{\includegraphics[scale=0.75]{img/app.png}}
+\caption{Over view of the application}
+\label{app}
+\end{figure}
+%-------------------------------------------------------
+\section{Conclusion}
+This project is just scratching the surface of the vast variety and many applications of computer vision. This might not be the best approach of skeletonization and identifying movements, but it can be further improved by adding more algorithms that can link the circles, also if the output was processed by some of the graphing algorithms where it will make it more accurate and precise. A future work for this project is to implement a third axis detection and representation.
+
+
+\bibliographystyle{ieeetran}
+\bibliography{bib}
+
+\end{document}
+
+%%
+%% EOF ieeepes_skel.tex
+%%----------------------------------------------------------------------
+

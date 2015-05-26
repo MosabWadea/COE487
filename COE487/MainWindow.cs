@@ -70,8 +70,6 @@ namespace COE487{
             org = cam.QueryFrame();
             if (org == null) return;
 
-            Image<Bgr, Byte> skeleton = new Image<Bgr,Byte>(new Size(331, 244));
-
             proc = org.InRange(bgrL, bgrH);
 
             proc = proc.SmoothGaussian(9);
